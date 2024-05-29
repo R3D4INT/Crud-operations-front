@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
+using WebApplication1.Models.enums;
 
-namespace CrudOperations_Front.Models
+namespace WebApplication1.Models
 {
     public class User : BaseEntity
     {

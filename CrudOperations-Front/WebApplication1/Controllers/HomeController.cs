@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Threading.Tasks;
 using System.Web.Mvc;
+using BackNewVersion;
+using WebApplication1.Models;
+using WebApplication1.Models.enums;
 
-namespace CrudOperations_Front.Controllers
+
+namespace WebApplication1.Controllers
 {
     [Route("[controller]")]
     public class HomeController : Controller
     {
-        private readonly IUserRepository _repository;
-
-        public HomeController(IUserRepository repository)
-        {
-            _repository = repository;
-        }
         [HttpGet]
         public async Task<ActionResult> Index()
         {
@@ -28,7 +22,6 @@ namespace CrudOperations_Front.Controllers
                 Address = "123 Main St, Anytown, USA",
                 Gender = Gender.Male
             };
-            await _repository.AddAsync(user);
             return View();
         }
 
@@ -44,6 +37,12 @@ namespace CrudOperations_Front.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+        public ActionResult UserCrudOperations()
+        {
+            ViewBag.Message = "Page for crud operations with user";
+
+            return Redirect($"https://localhost:44374/User/User");
         }
     }
 }

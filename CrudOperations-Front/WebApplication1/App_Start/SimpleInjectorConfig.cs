@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using SimpleInjector;
 using System.Reflection;
-using System.Web;
 using System.Web.Mvc;
-using SimpleInjector;
-using Container = System.ComponentModel.Container;
+using BackNewVersion;
+using SimpleInjector.Integration.Web;
+using SimpleInjector.Integration.Web.Mvc;
 
-namespace CrudOperations_Front.App_Start
+namespace WebApplication1.App_Start
 {
     public static class SimpleInjectorConfig
     {
