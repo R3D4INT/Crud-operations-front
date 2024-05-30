@@ -17,38 +17,21 @@ namespace WebApplication1.Controllers
 {
     public class UserController : Controller
     {
-        private readonly string BaseUrl = "https://localhost:44343/api/UserApi";
+        private readonly string BaseUrl = "https://localhost:7110/api/UserApi";
         public async Task<ActionResult> User()
         {
+            var validationResult = CheckModelState();
+            if (validationResult != null)
+            {
+                return validationResult;
+            }
             var users = new List<User>();
-
-            if(!ModelState.IsValid)
+            var (isSuccess, content) = await SendHttpRequestAsync(BaseUrl + "/GetAllUsers", HttpMethod.Get);
+            if (isSuccess)
             {
-                var errors = ModelState.Values.SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage).ToList();
-                return Json(new { success = false, errors = errors });
+                users = JsonConvert.DeserializeObject<List<User>>(content);
             }
 
-            using (var httpClient = new HttpClient())
-            {
-                var response = await httpClient.GetAsync(BaseUrl + "/GetAllUsers");
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-                    users = JsonConvert.DeserializeObject<List<User>>(content);
-                }
-            }
-            var model = new User()
-            {
-                Name = "Alice",
-                Surname = "Johnson",
-                Age = 28,
-                Email = "alice.johnson@example.com",
-                Address = "789 Oak St, Springfield",
-                Gender = Gender.Female
-            };
-            users.Add(model);
-            users.Add(model);
             return View(users);
         }
         public ActionResult Edit(User user)
@@ -59,27 +42,21 @@ namespace WebApplication1.Controllers
         [System.Web.Mvc.HttpPut]
         public async Task<ActionResult> UpdateUser(User user)
         {
-            if (!ModelState.IsValid)
+            var validationResult = CheckModelState();
+            if (validationResult != null)
             {
-                var errors = ModelState.Values.SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage).ToList();
-                return Json(new { success = false, errors = errors });
+                return validationResult;
             }
 
             using (var httpClient = new HttpClient())
             {
-                httpClient.BaseAddress = new Uri("https://localhost:44343/");
-                var json = JsonConvert.SerializeObject(user);
-                var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-
-                var response = await httpClient.PutAsync(BaseUrl + $"/UpdateUser/{user.Id}", content);
-                if (response.IsSuccessStatusCode)
+                var (isSuccess, content) = await SendHttpRequestAsync(BaseUrl + $"/UpdateUser/{user.Id}", HttpMethod.Put, user);
+                if (isSuccess)
                 {
                     return Json(new { success = true });
                 }
 
-                var errorContent = await response.Content.ReadAsStringAsync();
-                return Json(new { success = false, errors = new List<string> { errorContent } });
+                return Json(new { success = false, errors = new List<string> { content } });
             }
         }
         public ActionResult Add()
@@ -91,27 +68,21 @@ namespace WebApplication1.Controllers
         [System.Web.Mvc.HttpPost]
         public async Task<ActionResult> AddUser(User user)
         {
-            if (!ModelState.IsValid)
+            var validationResult = CheckModelState();
+            if (validationResult != null)
             {
-                var errors = ModelState.Values.SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage).ToList();
-                return Json(new { success = false, errors = errors });
+                return validationResult;
             }
 
             using (var httpClient = new HttpClient())
             {
-                httpClient.BaseAddress = new Uri("https://localhost:44343/"); 
-                var json = JsonConvert.SerializeObject(user);
-                var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-
-                var response = await httpClient.PostAsync(BaseUrl + "/CreateUser", content);
-                if (response.IsSuccessStatusCode)
+                var (isSuccess, content) = await SendHttpRequestAsync(BaseUrl + "/CreateUser", HttpMethod.Post, user);
+                if (isSuccess)
                 {
                     return Json(new { success = true });
                 }
 
-                var errorContent = await response.Content.ReadAsStringAsync();
-                return Json(new { success = false, errors = new List<string> { errorContent } });
+                return Json(new { success = false, errors = new List<string> { content } });
             }
         }
         public ActionResult Delete(User user)
@@ -123,25 +94,21 @@ namespace WebApplication1.Controllers
         [System.Web.Mvc.HttpDelete]
         public async Task<ActionResult> DeleteUser([FromBody] int id)
         {
-            if (!ModelState.IsValid)
+            var validationResult = CheckModelState();
+            if (validationResult != null)
             {
-                var errors = ModelState.Values.SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage).ToList();
-                return Json(new { success = false, errors = errors });
+                return validationResult;
             }
 
             using (var httpClient = new HttpClient())
             {
-                httpClient.BaseAddress = new Uri("https://localhost:44343/");
-
-                var response = await httpClient.DeleteAsync($"api/UserApi/DeleteUser/{id}");
-                if (response.IsSuccessStatusCode)
+                var (isSuccess, content) = await SendHttpRequestAsync(BaseUrl + $"/DeleteUser/{id}", HttpMethod.Delete);
+                if (isSuccess)
                 {
                     return Json(new { success = true });
                 }
 
-                var errorContent = await response.Content.ReadAsStringAsync();
-                return Json(new { success = false, errors = new List<string> { errorContent } });
+                return Json(new { success = false, errors = new List<string> { content } });
             }
         }
         public async Task<ActionResult> GetUser(int id)
@@ -159,6 +126,34 @@ namespace WebApplication1.Controllers
             }
 
             return Json(user);
+        }
+        private async Task<(bool isSuccess, string content)> SendHttpRequestAsync(string url, HttpMethod method, object data = null)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                HttpRequestMessage request = new HttpRequestMessage(method, url);
+
+                if (data != null)
+                {
+                    var json = JsonConvert.SerializeObject(data);
+                    request.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+                }
+
+                var response = await httpClient.SendAsync(request);
+                var content = await response.Content.ReadAsStringAsync();
+
+                return (response.IsSuccessStatusCode, content);
+            }
+        }
+        private JsonResult CheckModelState()
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage).ToList();
+                return Json(new { success = false, errors = errors });
+            }
+            return null;
         }
     }
 }

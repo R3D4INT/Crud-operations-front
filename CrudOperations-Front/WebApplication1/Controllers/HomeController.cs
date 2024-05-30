@@ -13,15 +13,6 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            var user = new User()
-            {
-                Name = "John",
-                Surname = "Doe",
-                Age = 30,
-                Email = "john.doe@example.com",
-                Address = "123 Main St, Anytown, USA",
-                Gender = Gender.Male
-            };
             return View();
         }
 
