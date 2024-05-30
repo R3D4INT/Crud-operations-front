@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Mvc;
 using BackNewVersion;
+using WebApplication1.Helpers;
 using WebApplication1.Models;
 using WebApplication1.Models.enums;
 
@@ -18,22 +19,22 @@ namespace WebApplication1.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = ViewHomeMessages.AboutMessage;
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = ViewHomeMessages.ContactMessage;
 
             return View();
         }
         public ActionResult UserCrudOperations()
         {
-            ViewBag.Message = "Page for crud operations with user";
+            ViewBag.Message = ViewHomeMessages.UserCrudOperationsMessage;
 
-            return Redirect($"https://localhost:44374/User/User");
+            return Redirect(ViewHomeMessages.UserRedirectUrl);
         }
     }
 }
