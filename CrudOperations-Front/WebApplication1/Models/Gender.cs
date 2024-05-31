@@ -1,4 +1,4 @@
-﻿namespace WebApplication1.Models.enums
+﻿namespace WebApplication1.Models
 {
     public enum Gender
     {

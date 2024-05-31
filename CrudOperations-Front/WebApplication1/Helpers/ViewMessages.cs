@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace WebApplication1.Helpers
+﻿namespace WebApplication1.Helpers
 {
     public static class ViewUserMessages
     {
@@ -11,6 +6,7 @@ namespace WebApplication1.Helpers
         public const string AddMessage = "Page for add the user";
         public const string DeleteMessage = "Page for delete the user";
     }
+
     public static class ViewHomeMessages
     {
         public const string AboutMessage = "Your application description page.";

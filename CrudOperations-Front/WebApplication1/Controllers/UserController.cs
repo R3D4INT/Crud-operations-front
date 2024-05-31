@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -8,19 +8,13 @@ using System.Web.Mvc;
 using WebApplication1.Helpers;
 using WebApplication1.Models;
 
-
 namespace WebApplication1.Controllers
 {
-
     public class UserController : Controller
     {
+        [ValidateModelState]
         public async Task<ActionResult> User()
         {
-            if (CheckModelState() != null)
-            {
-                return CheckModelState();
-            }
-
             var users = new List<User>();
             var (isSuccess, content) = await SendHttpRequestAsync(ApiRoutes.GetAllUsers, HttpMethod.Get);
             if (isSuccess)
@@ -38,12 +32,9 @@ namespace WebApplication1.Controllers
         }
 
         [System.Web.Mvc.HttpPut]
+        [ValidateModelState]
         public async Task<ActionResult> UpdateUser(User user)
         {
-            if (CheckModelState() != null)
-            {
-                return CheckModelState();
-            }
             var (isSuccess, content) = await SendHttpRequestAsync($"{ApiRoutes.UpdateUser}{user.Id}", HttpMethod.Put, user);
             if (isSuccess)
             {
@@ -60,13 +51,9 @@ namespace WebApplication1.Controllers
         }
 
         [System.Web.Mvc.HttpPost]
+        [ValidateModelState]
         public async Task<ActionResult> AddUser(User user)
         {
-            if (CheckModelState() != null)
-            {
-                return CheckModelState();
-            }
-
             var (isSuccess, content) = await SendHttpRequestAsync(ApiRoutes.CreateUser, HttpMethod.Post, user);
             if (isSuccess)
             {
@@ -83,13 +70,9 @@ namespace WebApplication1.Controllers
         }
 
         [System.Web.Mvc.HttpDelete]
+        [ValidateModelState]
         public async Task<ActionResult> DeleteUser([FromBody] int id)
         {
-            if (CheckModelState() != null)
-            {
-                return CheckModelState();
-            }
-
             var (isSuccess, content) = await SendHttpRequestAsync($"{ApiRoutes.DeleteUser}{id}", HttpMethod.Delete);
             if (isSuccess)
             {
@@ -100,21 +83,18 @@ namespace WebApplication1.Controllers
 
         }
 
+        [ValidateModelState]
         public async Task<ActionResult> GetUser(int id)
         {
-            var user = new User();
-            using (var httpClient = new HttpClient())
-            {
+            var (isSuccess, content) = await SendHttpRequestAsync(ApiRoutes.GetUser, HttpMethod.Get);
 
-                var response = await httpClient.GetAsync(ApiRoutes.GetUser);
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-                    user = JsonConvert.DeserializeObject<User>(content);
-                }
+            if (isSuccess)
+            {
+                var user = JsonConvert.DeserializeObject<User>(content);
+                return Json(user);
             }
 
-            return Json(user);
+            return Json(new { success = false, errors = new List<string> { content } });
         }
 
         private async Task<(bool isSuccess, string content)> SendHttpRequestAsync(string url, HttpMethod method, object data = null)
@@ -132,19 +112,13 @@ namespace WebApplication1.Controllers
                 var response = await httpClient.SendAsync(request);
                 var content = await response.Content.ReadAsStringAsync();
 
+                if (response.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    return (true, content);
+                }
+
                 return (response.IsSuccessStatusCode, content);
             }
         }
-        private JsonResult CheckModelState()
-        {
-            if (!ModelState.IsValid)
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage).ToList();
-                return Json(new { success = false, errors = errors });
-            }
-
-            return null;
-        }
     }
-}
+}   

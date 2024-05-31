@@ -7,73 +7,78 @@
 <h2>Delete</h2>
 
 <h3>Are you sure you want to delete this?</h3>
-    <h4>User</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+<h4>User</h4>
+<hr />
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.Name)
+    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+    <dd>
+        @Html.DisplayFor(model => model.Name)
+    </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Surname)
-        </dt>
+    <dt>
+        @Html.DisplayNameFor(model => model.Surname)
+    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Surname)
-        </dd>
+    <dd>
+        @Html.DisplayFor(model => model.Surname)
+    </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Age)
-        </dt>
+    <dt>
+        @Html.DisplayNameFor(model => model.Age)
+    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Age)
-        </dd>
+    <dd>
+        @Html.DisplayFor(model => model.Age)
+    </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
+    <dt>
+        @Html.DisplayNameFor(model => model.Email)
+    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
+    <dd>
+        @Html.DisplayFor(model => model.Email)
+    </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
+    <dt>
+        @Html.DisplayNameFor(model => model.Address)
+    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
+    <dd>
+        @Html.DisplayFor(model => model.Address)
+    </dd>
 
-    </dl>
+</dl>
 
 
-        <div class="form-actions no-color">
-            <input type="button" value="Delete" class="btn btn-default" onclick="deleteUser(@Model.Id)" />
-            @Html.ActionLink("Back to List", "User")
-        </div>
-    @section Scripts {
+<div class="form-actions no-color">
+    <input type="button" value="Delete" class="btn btn-default" onclick="deleteUser(@Model.Id)" />
+    @Html.ActionLink("Back to List", "User")
+</div>
+@section Scripts {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
-     function deleteUser(id) {
-            if (confirm('Are you sure you want to delete this user?')) {
-                $.ajax({
-                    url: `/User/DeleteUser/${id}`,
-                    type: 'DELETE',
-                    success: function (response) {
+    function deleteUser(id) {
+        if (confirm('Are you sure you want to delete this user?')) {
+            $.ajax({
+                url: `/User/DeleteUser/${id}`,
+                type: 'DELETE',
+                success: function(response) {
+                    if (response.success) {
                         alert('User deleted successfully.');
                         window.location.href = '@Url.Action("User", "User")';
-                    },
-                    error: function (xhr, status, error) {
-                        alert(`An error occurred: ${error}`);
+                    } else {
+                        alert(`Error: ${response.message}`);
                     }
-                });
-            }
+                },
+                error: function(xhr, status, error) {
+                    alert(`An error occurred: ${error}`);
+                }
+            });
         }
+    }
     </script>
-        }
+
+}

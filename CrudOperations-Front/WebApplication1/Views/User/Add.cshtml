@@ -1,5 +1,4 @@
-﻿@using WebApplication1.Controllers
-@model WebApplication1.Models.User
+﻿@model WebApplication1.Models.User
 
 @{
     ViewBag.Title = "Add";
@@ -68,20 +67,26 @@
 @section Scripts {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
-        function submitForm() {
-            var form = $('#myForm');
-            $.ajax({
-                url: '@Url.Action("AddUser", "User")',
-                type: 'POST',
-                data: form.serialize(),
-                success: function (response) {
+    function submitForm() {
+        var form = $('#myForm');
+        $.ajax({
+            url: '@Url.Action("AddUser", "User")',
+            type: 'POST',
+            data: form.serialize(),
+            success: function(response) {
+                if (response.success) {
                     alert('User added successfully.');
-                     window.location.href = '@Url.Action("User", "User")';
-                },
-                error: function (xhr, status, error) {
-                    alert('An error occurred: ' + error);
+                    window.location.href = '@Url.Action("User", "User")';
+                } else {
+                    var errorMessages = response.errors.join('\n');
+                    alert('Errors occurred:\n' + errorMessages);
                 }
-            });
-        }
-    </script>
+            },
+            error: function(xhr, status, error) {
+                alert('An error occurred: ' + error);
+            }
+        });
+    }
+</script>
+
 }

@@ -172,6 +172,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ApiRoutes.cs" />
+    <Compile Include="Helpers\ValidateModelStateAtribute.cs" />
     <Compile Include="Helpers\ViewMessages.cs" />
     <Compile Include="Models\BaseEntity.cs" />
     <Compile Include="Models\Gender.cs" />

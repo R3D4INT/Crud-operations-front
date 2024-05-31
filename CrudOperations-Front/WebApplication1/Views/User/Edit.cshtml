@@ -58,7 +58,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" onclick="submitForm()"/>
+                <input type="submit" value="Save" class="btn btn-default" onclick="submitForm()" />
             </div>
         </div>
     </div>
@@ -71,23 +71,31 @@
 @section Scripts {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
+    function submitForm() {
+        var form = $('#myForm');
+        var formData = form.serialize();
 
-        function submitForm() {
-            var form = $('#myForm');
-            var formData = form.serialize();
-
-            $.ajax({
-                url: '@Url.Action("UpdateUser", "User")',
-                type: 'PUT',
-                data: formData,
-                success: function (response) {
-                    alert('User updated successfully..');
+        $.ajax({
+            url: '@Url.Action("UpdateUser", "User")',
+            type: 'PUT',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    alert('User updated successfully.');
                     window.location.href = '@Url.Action("User", "User")';
-                },
-                error: function (xhr, status, error) {
-                    alert('An error occurred:: ' + error);
+                } else {
+                    if (response.errors) {
+                        var errorMessages = response.errors.join('\n');
+                        alert('Validation errors:\n' + errorMessages);
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
                 }
-            });
-        }
+            },
+            error: function(xhr, status, error) {
+                alert('An error occurred: ' + xhr.responseText || error);
+            }
+        });
+    }
     </script>
 }
