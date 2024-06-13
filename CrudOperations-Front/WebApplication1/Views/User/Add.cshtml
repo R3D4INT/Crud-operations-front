@@ -1,16 +1,18 @@
 ﻿@model WebApplication1.Models.User
 
+@using WebApplication1.Resources.User
+
 @{
     ViewBag.Title = "Add";
 }
 
-<h2>Add</h2>
+<h2>@Add.Add_Operation</h2>
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myForm" }))
 {
     @Html.AntiForgeryToken()
     <div class="form-horizontal">
-        <h4>User</h4>
+        <h4>@Add.User</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -62,7 +64,7 @@
     </div>
 }
 
-@Html.ActionLink("Back to List", "User")
+@Html.ActionLink(@Add.Back, "User")
 
 @section Scripts {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -75,18 +77,18 @@
             data: form.serialize(),
             success: function(response) {
                 if (response.success) {
-                    alert('User added successfully.');
+                    alert('@Add.Successfull_Adding');
                     window.location.href = '@Url.Action("User", "User")';
                 } else {
                     var errorMessages = response.errors.join('\n');
-                    alert('Errors occurred:\n' + errorMessages);
+                    alert('@Add.Error_Occured\n' + errorMessages);
                 }
             },
             error: function(xhr, status, error) {
-                alert('An error occurred: ' + error);
+                alert('@Add.Error_Occured ' + error);
             }
         });
     }
-</script>
+    </script>
 
 }

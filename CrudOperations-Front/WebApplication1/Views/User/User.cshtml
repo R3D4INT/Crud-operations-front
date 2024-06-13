@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<WebApplication1.Models.User>
 
 @{
-    ViewBag.Title = "UserOperations";
+    ViewBag.Title = @WebApplication1.Resources.User.User.UserOperations_Title;
 }
 
-<h2>UserOperations</h2>
+<h2> @WebApplication1.Resources.User.User.UserOperations_Title</h2>
 
 <p>
-    @Html.ActionLink("Add", "Add")
+    @Html.ActionLink(@WebApplication1.Resources.User.User.Add, "Add")
 </p>
 <table class="table">
     <tr>
@@ -29,7 +29,8 @@
         <th></th>
     </tr>
 
-    @foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -47,15 +48,14 @@
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", item)
+                @Html.ActionLink(@WebApplication1.Resources.User.User.Edit, "Edit", item)
             </td>
             <td>
-                @Html.ActionLink("Delete", "Delete", item)
+                @Html.ActionLink(@WebApplication1.Resources.User.User.Delete, "Delete", item)
             </td>
         </tr>
     }
 
 </table>
 <td>
-    
 </td>

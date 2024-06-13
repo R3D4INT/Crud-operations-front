@@ -1,17 +1,19 @@
 ﻿@model WebApplication1.Models.User
 
+@using WebApplication1.Resources.User
+
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = @Edit.Edit_Operation;
 }
 
-<h2>Edit</h2>
+<h2>@Edit.Edit_Operation</h2>
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "myForm" }))
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>User</h4>
+        <h4>@Edit.User</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
@@ -65,7 +67,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "User")
+    @Html.ActionLink(@Edit.Back_to_List, "User")
 </div>
 
 @section Scripts {
@@ -81,19 +83,19 @@
             data: formData,
             success: function(response) {
                 if (response.success) {
-                    alert('User updated successfully.');
+                    alert('@Edit.Successfull_Result');
                     window.location.href = '@Url.Action("User", "User")';
                 } else {
                     if (response.errors) {
                         var errorMessages = response.errors.join('\n');
-                        alert('Validation errors:\n' + errorMessages);
+                        alert('@Edit.Validation_Error\n' + errorMessages);
                     } else {
-                        alert('Error: ' + response.message);
+                        alert('@Edit.Error' + response.message);
                     }
                 }
             },
             error: function(xhr, status, error) {
-                alert('An error occurred: ' + xhr.responseText || error);
+                alert('@Edit.Error_Occured' + xhr.responseText || error);
             }
         });
     }
