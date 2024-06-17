@@ -1,7 +1,7 @@
-﻿@using WebApplication1.Resources.Home
+﻿@model WebApplication1.Models.Localization.IndexViewModel
 
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = @Model.Title;
 }
 
 <!DOCTYPE html>
@@ -9,32 +9,50 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewBag.Title - @Index.Title_Index</title>
+    <title>@ViewBag.Title - @Model.IndexTitle</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">@Index.Welcome_Index</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">@Index.LearnMore_Index &raquo;</a></p>
-    </section>
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">@Index.FirstSectionTitle_Index</h2>
-            <p>@Index.FirstSectionMessage_Index</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">@Index.LearnMore_Index &raquo;</a></p>
+<body>
+    <main>
+        <section class="row" aria-labelledby="aspnetTitle">
+            <h1 id="title">ASP.NET</h1>
+            <p class="lead">@Model.IndexWelcome</p>
+            <p>
+                <a href="https://asp.net" class="btn btn-primary btn-md">
+                    @Model.IndexLearnMore &raquo;
+                </a>
+            </p>
         </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">@Index.SecondSectionTitle_Index</h2>
-            <p>@Index.SecondSectionMessage_Index</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">@Index.LearnMore_Index &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">@Index.ThirdSectionTitle_Index</h2>
-            <p>@Index.ThirdSectionMessage_Index</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">@Index.LearnMore_Index &raquo;</a></p>
-        </section>
-    </div>
-</main>
+        <div class="row">
+            <section class="col-md-4" aria-labelledby="gettingStartedTitle">
+                <h2 id="gettingStartedTitle">@Model.IndexFirstSectionTitle</h2>
+                <p>@Model.IndexFirstSectionMessage</p>
+                <p>
+                    <a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">
+                        @Model.IndexLearnMore &raquo;
+                    </a>
+                </p>
+            </section>
+            <section class="col-md-4" aria-labelledby="librariesTitle">
+                <h2 id="librariesTitle">@Model.IndexSecondSectionTitle</h2>
+                <p>@Model.IndexSecondSectionMessage</p>
+                <p>
+                    <a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">
+                        @Model.IndexLearnMore &raquo;
+                    </a>
+                </p>
+            </section>
+            <section class="col-md-4" aria-labelledby="hostingTitle">
+                <h2 id="hostingTitle">@Model.IndexThirdSectionTitle</h2>
+                <p>@Model.IndexThirdSectionMessage</p>
+                <p>
+                    <a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">
+                        @Model.IndexLearnMore &raquo;
+                    </a>
+                </p>
+            </section>
+        </div>
+    </main>
+</body>
 </html>

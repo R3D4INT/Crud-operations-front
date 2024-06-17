@@ -1,12 +1,12 @@
-﻿@using WebApplication1.Resources.Home
+﻿@model WebApplication1.Models.Localization.Home.ContactViewModel
 
 @{
-    ViewBag.Title = @Contact.Title;
+    ViewBag.Title = @Model.Title;
 }
 
 <main aria-labelledby="title">
-    <h2 id="title">@Contact.Title</h2>
-    <h3>@ViewBag.Message</h3>
+    <h2 id="title"> @Model.Title</h2>
+    <h3> @Model.Message</h3>
 
     <address>
         One Microsoft Way<br />
@@ -16,7 +16,7 @@
     </address>
 
     <address>
-        <strong>@Contact.Support</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-        <strong>@Contact.Marketing</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
+        <strong> @Model.Support</strong> <a href="mailto:Support@example.com">Support@example.com</a><br />
+        <strong> @Model.Marketing</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
     </address>
 </main>

@@ -12,7 +12,6 @@ namespace WebApplication1
 {
     public class MvcApplication : HttpApplication
     {
-
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
@@ -22,9 +21,11 @@ namespace WebApplication1
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
         }
+
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
             var languageCookie = Request.Cookies["Language"];
+
             if (languageCookie != null)
             {
                 var culture = new CultureInfo(languageCookie.Value);
