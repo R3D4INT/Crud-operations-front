@@ -1,86 +1,57 @@
-﻿@model WebApplication1.Models.User
-
-@using WebApplication1.Resources.User
+﻿@model WebApplication1.Models.Localization.CompositeViewsModels.UserDeleteCompositeViewModel
 
 @{
-    ViewBag.Title = @Delete.Delete_Operation;
+    ViewBag.Title = @Model.DeleteViewModel.DeleteOperation;
 }
 
-<h2>@Delete.Delete_Operation</h2>
+<h2>@Model.DeleteViewModel.DeleteOperation</h2>
 
-<h3>@Delete.Confirmation</h3>
-<h4>@Delete.User</h4>
+<h3>@Model.DeleteViewModel.Confirmation</h3>
+<h4>@Model.DeleteViewModel.User</h4>
 <hr />
 <dl class="dl-horizontal">
-    <dt>
-        @Html.DisplayNameFor(model => model.Name)
-    </dt>
+    <dt>@Html.DisplayNameFor(model => model.User.Name)</dt>
+    <dd>@Html.DisplayFor(model => model.User.Name)</dd>
 
-    <dd>
-        @Html.DisplayFor(model => model.Name)
-    </dd>
+    <dt>@Html.DisplayNameFor(model => model.User.Surname)</dt>
+    <dd>@Html.DisplayFor(model => model.User.Surname)</dd>
 
-    <dt>
-        @Html.DisplayNameFor(model => model.Surname)
-    </dt>
+    <dt>@Html.DisplayNameFor(model => model.User.Age)</dt>
+    <dd>@Html.DisplayFor(model => model.User.Age)</dd>
 
-    <dd>
-        @Html.DisplayFor(model => model.Surname)
-    </dd>
+    <dt>@Html.DisplayNameFor(model => model.User.Email)</dt>
+    <dd>@Html.DisplayFor(model => model.User.Email)</dd>
 
-    <dt>
-        @Html.DisplayNameFor(model => model.Age)
-    </dt>
-
-    <dd>
-        @Html.DisplayFor(model => model.Age)
-    </dd>
-
-    <dt>
-        @Html.DisplayNameFor(model => model.Email)
-    </dt>
-
-    <dd>
-        @Html.DisplayFor(model => model.Email)
-    </dd>
-
-    <dt>
-        @Html.DisplayNameFor(model => model.Address)
-    </dt>
-
-    <dd>
-        @Html.DisplayFor(model => model.Address)
-    </dd>
-
+    <dt>@Html.DisplayNameFor(model => model.User.Address)</dt>
+    <dd>@Html.DisplayFor(model => model.User.Address)</dd>
 </dl>
 
-
 <div class="form-actions no-color">
-    <input type="button" value="Delete" class="btn btn-default" onclick="deleteUser(@Model.Id)" />
-    @Html.ActionLink(@Delete.Back_to_List, "User")
+    <input type="button" value="Delete" class="btn btn-default" onclick="deleteUser(@Model.User.Id)" />
+    @Html.ActionLink(@Model.DeleteViewModel.BackToList, "User")
 </div>
+
 @section Scripts {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
     function deleteUser(id) {
-        if (confirm('@Delete.Confirmation')) {
+        if (confirm('@Model.DeleteViewModel.Confirmation')) {
             $.ajax({
                 url: `/User/DeleteUser/${id}`,
                 type: 'DELETE',
                 success: function(response) {
                     if (response.success) {
-                        alert('@Delete.Successfull_Deletion');
+                        alert('@Model.DeleteViewModel.SuccessfulDeletion');
                         window.location.href = '@Url.Action("User", "User")';
                     } else {
-                        alert(`@Delete.Error_Occured ${response.message}`);
+                        alert('@Model.DeleteViewModel.ErrorOccured ' + response.message);
                     }
                 },
                 error: function(xhr, status, error) {
-                    alert(`@Delete.Error_Occured ${error}`);
+                    alert('@Model.DeleteViewModel.ErrorOccured ' + error);
                 }
             });
         }
     }
     </script>
-
 }

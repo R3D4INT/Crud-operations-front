@@ -1,35 +1,34 @@
-﻿@model IEnumerable<WebApplication1.Models.User>
+﻿@model WebApplication1.Models.Localization.CompositeViewsModels.UserCompositeViewModel
 
 @{
-    ViewBag.Title = @WebApplication1.Resources.User.User.UserOperations_Title;
+    ViewBag.Title = @Model.UserViewModel.UserOperationsTitle;
 }
 
-<h2> @WebApplication1.Resources.User.User.UserOperations_Title</h2>
+<h2> @Model.UserViewModel.UserOperationsTitle</h2>
 
 <p>
-    @Html.ActionLink(@WebApplication1.Resources.User.User.Add, "Add")
+    @Html.ActionLink(@Model.UserViewModel.Add, "Add")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Users.First().Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Surname)
+            @Html.DisplayNameFor(model => model.Users.First().Surname)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Age)
+            @Html.DisplayNameFor(model => model.Users.First().Age)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.DisplayNameFor(model => model.Users.First().Email)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Address)
+            @Html.DisplayNameFor(model => model.Users.First().Address)
         </th>
-        <th></th>
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.Users)
     {
         <tr>
             <td>
@@ -48,10 +47,10 @@
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
             <td>
-                @Html.ActionLink(@WebApplication1.Resources.User.User.Edit, "Edit", item)
+                @Html.ActionLink(@Model.UserViewModel.Edit, "Edit", item)
             </td>
             <td>
-                @Html.ActionLink(@WebApplication1.Resources.User.User.Delete, "Delete", item)
+                @Html.ActionLink(@Model.UserViewModel.Delete, "Delete", item)
             </td>
         </tr>
     }

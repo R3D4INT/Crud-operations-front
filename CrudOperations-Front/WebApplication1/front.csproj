@@ -46,6 +46,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=10.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.10.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -164,6 +167,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\MappingProfile.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -173,91 +177,26 @@
     </Compile>
     <Compile Include="Helpers\ApiRoutes.cs" />
     <Compile Include="Helpers\ValidateModelStateAtribute.cs" />
-    <Compile Include="Helpers\ViewMessages.cs" />
+    <Compile Include="Helpers\UrlsAndPaths.cs" />
     <Compile Include="Models\BaseEntity.cs" />
     <Compile Include="Models\Gender.cs" />
+    <Compile Include="Models\Localization\CompositeViewsModels\UserCompositeViewModel.cs" />
+    <Compile Include="Models\Localization\CompositeViewsModels\UserDeleteCompositeViewModel.cs" />
+    <Compile Include="Models\Localization\CompositeViewsModels\UserEditCompositeViewModel.cs" />
+    <Compile Include="Models\Localization\Home\AboutViewModel.cs" />
+    <Compile Include="Models\Localization\Home\ContactViewModel.cs" />
+    <Compile Include="Models\Localization\Home\IndexViewModel.cs" />
+    <Compile Include="Models\Localization\Interfaces\ILocalizableViewModel.cs" />
+    <Compile Include="Models\Localization\Shared\LayoutViewModel.cs" />
+    <Compile Include="Models\Localization\User\AddViewModel.cs" />
+    <Compile Include="Models\Localization\User\DeleteViewModel.cs" />
+    <Compile Include="Models\Localization\User\EditViewModel.cs" />
+    <Compile Include="Models\Localization\CompositeViewsModels\UserAddCompositeViewModel.cs" />
+    <Compile Include="Models\Localization\User\UserViewModel.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\Home\About.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>About.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\Home\About.IT.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>About.IT.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\User\Add.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Add.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\User\Add.IT.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Add.IT.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\Home\Contact.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Contact.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\Home\Contact.IT.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Contact.IT.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\User\Delete.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Delete.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\User\Delete.IT.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Delete.IT.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\User\Edit.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Edit.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\User\Edit.IT.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Edit.IT.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\Home\Index.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Index.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\Home\Index.IT.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Index.IT.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\User\User.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>User.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\User\User.IT.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>User.IT.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\Shared\_Layout.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>_Layout.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\Shared\_Layout.IT.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>_Layout.IT.resx</DependentUpon>
-    </Compile>
+    <Compile Include="Services\Implementations\LocalizationService.cs" />
+    <Compile Include="Services\Interfaces\ILocalizationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -351,73 +290,10 @@
       <Project>{0D13AF6A-2519-43D8-ACA9-C7042F64F2D1}</Project>
       <Name>BackNewVersion</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Home\About.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>About.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Home\About.IT.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>About.IT.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\User\Add.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Add.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\User\Add.IT.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Add.IT.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Home\Contact.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Contact.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Home\Contact.IT.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Contact.IT.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\User\Delete.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Delete.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\User\Delete.IT.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Delete.IT.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\User\Edit.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Edit.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\User\Edit.IT.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Edit.IT.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Home\Index.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Index.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Home\Index.IT.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Index.IT.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\User\User.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>User.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\User\User.IT.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>User.IT.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Shared\_Layout.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>_Layout.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Shared\_Layout.IT.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>_Layout.IT.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <ProjectReference Include="..\Front.Resources\Front.Resources.csproj">
+      <Project>{160e34cf-a09a-4125-876b-78bb212613bd}</Project>
+      <Name>Front.Resources</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

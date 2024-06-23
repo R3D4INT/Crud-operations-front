@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -7,28 +8,56 @@ using System.Web.Http;
 using System.Web.Mvc;
 using WebApplication1.Helpers;
 using WebApplication1.Models;
+using WebApplication1.Models.Localization.CompositeViewsModels;
+using WebApplication1.Models.Localization.User;
+using WebApplication1.Services;
 
 namespace WebApplication1.Controllers
 {
     public class UserController : Controller
     {
+        private readonly LocalizationService _localizationService;
+
+        public UserController()
+        {
+            _localizationService = new LocalizationService(CultureInfo.CurrentCulture);
+        }
+
         [ValidateModelState]
         public async Task<ActionResult> User()
         {
             var users = new List<User>();
             var (isSuccess, content) = await SendHttpRequestAsync(ApiRoutes.GetAllUsers, HttpMethod.Get);
+
             if (isSuccess)
             {
                 users = JsonConvert.DeserializeObject<List<User>>(content);
             }
 
-            return View(users);
+            var localizationViewModel = _localizationService.GetLocalizedViewModel<UserViewModel>(ResourcePaths.UserResourcesPath,
+                typeof(Front.Resources.Resources.User.User).Assembly);
+            
+            var model = new UserCompositeViewModel()
+            {
+                Users = users,
+                UserViewModel = localizationViewModel
+            };
+
+            return View(model);
         }
 
         public ActionResult Edit(User user)
         {
-            ViewBag.Message = ViewUserMessages.EditMessage;
-            return View(user);
+            var localizationViewModel = _localizationService.GetLocalizedViewModel<EditViewModel>(ResourcePaths.EditResourcesPath,
+                typeof(Front.Resources.Resources.User.Edit).Assembly);
+
+            var model = new UserEditCompositeViewModel()
+            {
+                User = user,
+                EditViewModel = localizationViewModel
+            };
+
+            return View(model);
         }
 
         [System.Web.Mvc.HttpPut]
@@ -36,6 +65,7 @@ namespace WebApplication1.Controllers
         public async Task<ActionResult> UpdateUser(User user)
         {
             var (isSuccess, content) = await SendHttpRequestAsync($"{ApiRoutes.UpdateUser}{user.Id}", HttpMethod.Put, user);
+
             if (isSuccess)
             {
                 return Json(new { success = true });
@@ -46,8 +76,16 @@ namespace WebApplication1.Controllers
 
         public ActionResult Add()
         {
-            ViewBag.Message = ViewUserMessages.AddMessage;
-            return View();
+            var localizationViewModel = _localizationService.GetLocalizedViewModel<AddViewModel>(ResourcePaths.AddResourcesPath,
+                typeof(Front.Resources.Resources.User.Add).Assembly);
+
+            var model = new UserAddCompositeViewModel
+            {
+                User = new User(),
+                AddViewModel = localizationViewModel
+            };
+
+            return View(model);
         }
 
         [System.Web.Mvc.HttpPost]
@@ -55,6 +93,7 @@ namespace WebApplication1.Controllers
         public async Task<ActionResult> AddUser(User user)
         {
             var (isSuccess, content) = await SendHttpRequestAsync(ApiRoutes.CreateUser, HttpMethod.Post, user);
+
             if (isSuccess)
             {
                 return Json(new { success = true });
@@ -65,8 +104,16 @@ namespace WebApplication1.Controllers
 
         public ActionResult Delete(User user)
         {
-            ViewBag.Message = ViewUserMessages.DeleteMessage;
-            return View(user);
+            var localizationViewModel = _localizationService.GetLocalizedViewModel<DeleteViewModel>(ResourcePaths.DeleteResourcesPath,
+                typeof(Front.Resources.Resources.User.Delete).Assembly);
+
+            var model = new UserDeleteCompositeViewModel()
+            {
+                User = user,
+                DeleteViewModel = localizationViewModel
+            };
+
+            return View(model);
         }
 
         [System.Web.Mvc.HttpDelete]
@@ -74,6 +121,7 @@ namespace WebApplication1.Controllers
         public async Task<ActionResult> DeleteUser([FromBody] int id)
         {
             var (isSuccess, content) = await SendHttpRequestAsync($"{ApiRoutes.DeleteUser}{id}", HttpMethod.Delete);
+
             if (isSuccess)
             {
                 return Json(new { success = true });

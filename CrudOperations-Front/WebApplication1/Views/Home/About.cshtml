@@ -1,12 +1,11 @@
-﻿@using WebApplication1.Resources.Home
+﻿@model WebApplication1.Models.Localization.AboutViewModel
 
 @{
-    ViewBag.Title = @About.Title;
+    ViewBag.Title = @Model.Title;
 }
 
 <main aria-labelledby="title">
-    <h2 id="title"> @About.Title</h2>
-    <h3>@About.Message</h3>
-
-    <p>@About.Message</p>
+    <h2 id="title">@Model.Title</h2>
+    <h3>@Model.Introduction</h3>
+    <p>@Model.Message</p>
 </main>

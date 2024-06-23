@@ -1,4 +1,4 @@
-﻿@using WebApplication1.Resources.Shared
+﻿@using Front.Resources.Resources.Shared
 
 <!DOCTYPE html>
 <html>
@@ -13,7 +13,8 @@
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
         <div class="container">
             @Html.ActionLink(@_Layout.Front, "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                    title="Toggle navigation" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -25,12 +26,16 @@
                     <li>@Html.ActionLink(_Layout.CrudOperations, "UserCrudOperations", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>
                 <ul class="navbar-nav">
-                    <li> <a href="@Url.Action("ChangeLanguage", "Home", new { lang = "EN" })">
-                        <button type="button">English</button>
-                    </a></li>
-                    <li><a href="@Url.Action("ChangeLanguage", "Home", new { lang = "IT" })">
-                        <button type="button">Italian</button>
-                    </a></li>
+                    <li>
+                        <a href="@Url.Action("ChangeLanguage", "Home", new { lang = "EN" })">
+                            <button type="button">English</button>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("ChangeLanguage", "Home", new { lang = "IT" })">
+                            <button type="button">Italian</button>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
