@@ -4,7 +4,6 @@
     {
         public const string UserRedirectUrl = "https://localhost:44374/User/User";
     }
-
     public static class ResourcePaths
     {
         public const string UserResourcesPath = "Front.Resources.Resources.User.User";

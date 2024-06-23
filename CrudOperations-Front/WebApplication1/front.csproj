@@ -179,7 +179,9 @@
     <Compile Include="Helpers\ValidateModelStateAtribute.cs" />
     <Compile Include="Helpers\UrlsAndPaths.cs" />
     <Compile Include="Models\BaseEntity.cs" />
-    <Compile Include="Models\Gender.cs" />
+    <Compile Include="Models\Country.cs" />
+    <Compile Include="Models\enums\Gender.cs" />
+    <Compile Include="Models\enums\Region.cs" />
     <Compile Include="Models\Localization\CompositeViewsModels\UserCompositeViewModel.cs" />
     <Compile Include="Models\Localization\CompositeViewsModels\UserDeleteCompositeViewModel.cs" />
     <Compile Include="Models\Localization\CompositeViewsModels\UserEditCompositeViewModel.cs" />

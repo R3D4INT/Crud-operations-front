@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -17,7 +18,6 @@ namespace WebApplication1.Controllers
     public class UserController : Controller
     {
         private readonly LocalizationService _localizationService;
-
         public UserController()
         {
             _localizationService = new LocalizationService(CultureInfo.CurrentCulture);
@@ -46,8 +46,21 @@ namespace WebApplication1.Controllers
             return View(model);
         }
 
-        public ActionResult Edit(User user)
+        public async Task<ActionResult> Edit(User user)
         {
+            var countries = await GetCountries();
+            var (isSuccess, content) = await SendHttpRequestAsync($"{ApiRoutes.GetUser}{user.Id}", HttpMethod.Get);
+
+            if (isSuccess)
+            {
+                user = JsonConvert.DeserializeObject<User>(content);
+            }
+
+            if (countries.Any())
+            {
+                ViewBag.CountriesSelectList = new SelectList(countries, "Name", "Name", user.Country.Name);
+            }
+
             var localizationViewModel = _localizationService.GetLocalizedViewModel<EditViewModel>(ResourcePaths.EditResourcesPath,
                 typeof(Front.Resources.Resources.User.Edit).Assembly);
 
@@ -64,6 +77,7 @@ namespace WebApplication1.Controllers
         [ValidateModelState]
         public async Task<ActionResult> UpdateUser(User user)
         {
+            user.Country = await GetCountryByName(user.Country.Name);
             var (isSuccess, content) = await SendHttpRequestAsync($"{ApiRoutes.UpdateUser}{user.Id}", HttpMethod.Put, user);
 
             if (isSuccess)
@@ -74,8 +88,15 @@ namespace WebApplication1.Controllers
             return Json(new { success = false, errors = new List<string> { content } });
         }
 
-        public ActionResult Add()
+        public async Task<ActionResult> Add()
         {
+            var countries = await GetCountries();
+
+            if (countries.Any())
+            {
+                ViewBag.CountriesSelectList = new SelectList(countries, "Name", "Name");
+            }
+
             var localizationViewModel = _localizationService.GetLocalizedViewModel<AddViewModel>(ResourcePaths.AddResourcesPath,
                 typeof(Front.Resources.Resources.User.Add).Assembly);
 
@@ -92,6 +113,8 @@ namespace WebApplication1.Controllers
         [ValidateModelState]
         public async Task<ActionResult> AddUser(User user)
         {
+            user.Country = await GetCountryByName(user.Country.Name);
+            
             var (isSuccess, content) = await SendHttpRequestAsync(ApiRoutes.CreateUser, HttpMethod.Post, user);
 
             if (isSuccess)
@@ -102,8 +125,15 @@ namespace WebApplication1.Controllers
             return Json(new { success = false, errors = new List<string> { content } });
         }
 
-        public ActionResult Delete(User user)
+        public async Task<ActionResult> Delete(User user)
         {
+            var (isSuccess, content) = await SendHttpRequestAsync($"{ApiRoutes.GetUser}{user.Id}", HttpMethod.Get);
+
+            if (isSuccess)
+            {
+                user = JsonConvert.DeserializeObject<User>(content);
+            }
+
             var localizationViewModel = _localizationService.GetLocalizedViewModel<DeleteViewModel>(ResourcePaths.DeleteResourcesPath,
                 typeof(Front.Resources.Resources.User.Delete).Assembly);
 
@@ -128,7 +158,6 @@ namespace WebApplication1.Controllers
             }
 
             return Json(new { success = false, errors = new List<string> { content } });
-
         }
 
         [ValidateModelState]
@@ -145,6 +174,30 @@ namespace WebApplication1.Controllers
             return Json(new { success = false, errors = new List<string> { content } });
         }
 
+        public async Task<List<Country>> GetCountries()
+        {
+            var (isSuccess, content) = await SendHttpRequestAsync(ApiRoutes.GetCountries, HttpMethod.Get);
+
+            if (isSuccess)
+            {
+                var countries = JsonConvert.DeserializeObject<List<Country>>(content);
+                return countries;
+            }
+
+            return new List<Country>();
+        }
+
+        private async Task<Country> GetCountryByName(string name)
+        {
+            var (isSuccess, content) = await SendHttpRequestAsync($"{ApiRoutes.GetCountry}{name}", HttpMethod.Get);
+
+            if (isSuccess)
+            {
+                return JsonConvert.DeserializeObject<Country>(content);
+            }
+
+            return null;
+        }
         private async Task<(bool isSuccess, string content)> SendHttpRequestAsync(string url, HttpMethod method, object data = null)
         {
             using (var httpClient = new HttpClient())

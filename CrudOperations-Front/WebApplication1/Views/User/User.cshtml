@@ -26,6 +26,9 @@
         <th>
             @Html.DisplayNameFor(model => model.Users.First().Address)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Users.First().Country)
+        </th>
     </tr>
 
     @foreach (var item in Model.Users)
@@ -45,6 +48,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country.Name)
             </td>
             <td>
                 @Html.ActionLink(@Model.UserViewModel.Edit, "Edit", item)
